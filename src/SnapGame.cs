@@ -9,7 +9,15 @@ namespace CardGames
         public static void LoadResources()
         {
             Bitmap cards;
+            SoundEffect slap = SwinGame.LoadSoundEffectNamed("slap","slap.wav");
+			SoundEffect jab = SwinGame.LoadSoundEffectNamed("jab","jab.wav");
+			SoundEffect shuffle = SwinGame.LoadSoundEffectNamed("shuffle","shuffle.wav");
+			SoundEffect smash = SwinGame.LoadSoundEffectNamed("smash","smash.wav");
+
+
+
             cards = SwinGame.LoadBitmapNamed ("Cards", "Cards.png");
+
             SwinGame.BitmapSetCellDetails (cards, 82, 110, 13, 5, 53);      // set the cells in the bitmap to match the cards
         }
 
@@ -25,22 +33,32 @@ namespace CardGames
 			if (SwinGame.KeyTyped (KeyCode.vk_SPACE))
 			{
 				myGame.Start();
+				SwinGame.PlaySoundEffect ("shuffle");
 			}
+
 		if (myGame.IsStarted)
  {
- if ( SwinGame.KeyTyped (KeyCode.vk_LSHIFT) &&
- SwinGame.KeyTyped (KeyCode.vk_RSHIFT))
+ if ( SwinGame.KeyTyped (KeyCode.vk_LSHIFT) && SwinGame.KeyTyped (KeyCode.vk_RSHIFT))
  {
- //TODO: add sound effects
+ 				SwinGame.StopSoundEffect ("shuffle");
+				SwinGame.PlaySoundEffect ("smash");
+ 
  }
  else if (SwinGame.KeyTyped (KeyCode.vk_LSHIFT))
  {
- myGame.PlayerHit (0);
- }
+ 				myGame.PlayerHit (0);
+ 				SwinGame.StopSoundEffect("shuffle");
+					SwinGame.PlaySoundEffect("slap");
+
+
+}
  else if (SwinGame.KeyTyped (KeyCode.vk_RSHIFT))
  {
- myGame.PlayerHit (1);
+					 myGame.PlayerHit (1);
+					 SwinGame.StopSoundEffect("shuffle");
+					SwinGame.PlaySoundEffect("jab");
  }
+
  } 	
 		}
 
@@ -51,6 +69,7 @@ namespace CardGames
 		private static void DrawGame(Snap myGame)
 		{
 			SwinGame.ClearScreen(Color.White);
+
 
 			// Draw the top card
 			Card top = myGame.TopCard;
